@@ -12,9 +12,6 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from '@/components/ui/button';
 import { PlusCircle } from 'lucide-react';
-import NapTracker from '@/components/tracking/NapTracker';
-import FeedTracker from '@/components/tracking/FeedTracker';
-import DailyRating from '@/components/tracking/DailyRating';
 import AddBabyForm from '@/components/baby/AddBabyForm';
 import BabyCard from '@/components/baby/BabyCard';
 
@@ -25,13 +22,6 @@ const Index = () => {
   
   return (
     <Layout>
-      <div className="mb-8 animate-fade-in">
-        <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
-        <p className="text-muted-foreground">
-          Track your baby's daily activities
-        </p>
-      </div>
-      
       {babies.length === 0 ? (
         <div className="my-12 max-w-md mx-auto text-center glass-morphism p-8 rounded-lg animate-scale-in">
           <h2 className="text-2xl font-semibold mb-4">Welcome to BabyTrack</h2>
@@ -61,30 +51,23 @@ const Index = () => {
           </Dialog>
         </div>
       ) : (
-        <div className="space-y-8">
-          {currentBaby ? (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-slide-in">
-              <NapTracker />
-              <FeedTracker />
-              <DailyRating />
-            </div>
-          ) : (
-            <div className="text-center py-8 glass-morphism rounded-lg animate-slide-in">
-              <h2 className="text-xl font-medium mb-2">Select a Baby</h2>
-              <p className="text-muted-foreground">
-                Choose a baby from your profiles to start tracking
-              </p>
-            </div>
-          )}
+        <div className="space-y-6">
+          <div className="mb-6">
+            <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
+            <p className="text-muted-foreground">
+              Track your baby's daily activities
+            </p>
+          </div>
           
-          <div className="space-y-4 mt-8">
+          <div className="space-y-4">
             <div className="flex justify-between items-center">
-              <h2 className="text-2xl font-semibold">Baby Profiles</h2>
+              <h2 className="text-xl font-semibold">Baby Profiles</h2>
               
               <Dialog>
                 <DialogTrigger asChild>
                   <Button
                     variant="outline"
+                    size="sm"
                     className="flex items-center gap-2"
                   >
                     <PlusCircle size={16} />
