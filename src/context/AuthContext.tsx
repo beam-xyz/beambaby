@@ -1,15 +1,17 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { toast } from 'sonner';
+import { supabase } from '@/lib/supabase';
+import { User } from '@supabase/supabase-js';
 
-interface User {
+interface AuthUser {
   id: string;
   email: string;
   name: string;
 }
 
 interface AuthContextType {
-  user: User | null;
+  user: AuthUser | null;
   isAuthenticated: boolean;
   isLoading: boolean;
   login: (email: string, password: string) => Promise<void>;
@@ -20,79 +22,96 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<AuthUser | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   
-  // Check if user is already logged in from localStorage
+  // Check current auth session and set up auth state listener
   useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-    setIsLoading(false);
+    // Get initial session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user) {
+        setUser({
+          id: session.user.id,
+          email: session.user.email || '',
+          name: session.user.user_metadata.name || session.user.email?.split('@')[0] || ''
+        });
+      }
+      setIsLoading(false);
+    });
+
+    // Listen for auth changes
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (session?.user) {
+        setUser({
+          id: session.user.id,
+          email: session.user.email || '',
+          name: session.user.user_metadata.name || session.user.email?.split('@')[0] || ''
+        });
+      } else {
+        setUser(null);
+      }
+      setIsLoading(false);
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
   
-  // Mock login function - will be replaced with Supabase auth
   const login = async (email: string, password: string) => {
     setIsLoading(true);
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Mock user data - will be replaced with real auth
-      const mockUser = {
-        id: '1',
+      const { error } = await supabase.auth.signInWithPassword({
         email,
-        name: email.split('@')[0]
-      };
+        password,
+      });
       
-      setUser(mockUser);
-      localStorage.setItem('user', JSON.stringify(mockUser));
+      if (error) throw error;
       toast.success('Logged in successfully');
-    } catch (error) {
-      toast.error('Login failed');
+    } catch (error: any) {
+      toast.error(error.message);
       throw error;
     } finally {
       setIsLoading(false);
     }
   };
   
-  // Mock signup function - will be replaced with Supabase auth
   const signUp = async (name: string, email: string, password: string) => {
     setIsLoading(true);
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Mock user creation - will be replaced with real auth
-      const mockUser = {
-        id: '1',
+      const { error } = await supabase.auth.signUp({
         email,
-        name
-      };
+        password,
+        options: {
+          data: {
+            name: name,
+          },
+        },
+      });
       
-      setUser(mockUser);
-      localStorage.setItem('user', JSON.stringify(mockUser));
-      toast.success('Account created successfully');
-    } catch (error) {
-      toast.error('Signup failed');
+      if (error) throw error;
+      toast.success('Account created successfully. Please check your email to verify your account.');
+    } catch (error: any) {
+      toast.error(error.message);
       throw error;
     } finally {
       setIsLoading(false);
     }
   };
   
-  // Logout function
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem('user');
-    localStorage.removeItem('babies');
-    localStorage.removeItem('currentBabyId');
-    localStorage.removeItem('naps');
-    localStorage.removeItem('feeds');
-    localStorage.removeItem('ratings');
-    localStorage.removeItem('activeNap');
-    toast.success('Logged out successfully');
+  const logout = async () => {
+    try {
+      await supabase.auth.signOut();
+      localStorage.removeItem('babies');
+      localStorage.removeItem('currentBabyId');
+      localStorage.removeItem('naps');
+      localStorage.removeItem('feeds');
+      localStorage.removeItem('ratings');
+      localStorage.removeItem('activeNap');
+      toast.success('Logged out successfully');
+    } catch (error: any) {
+      toast.error('Error logging out');
+    }
   };
   
   return (
