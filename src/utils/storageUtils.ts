@@ -1,5 +1,5 @@
 
-import { Baby, Nap, Feed, DailyRating } from '@/types/baby';
+import { Baby, Nap, Feed, DailyRating } from '@/hooks/baby/types';
 
 // Load data from localStorage
 export const loadFromStorage = () => {
