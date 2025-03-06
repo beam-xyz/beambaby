@@ -14,6 +14,7 @@ import { Button } from '@/components/ui/button';
 import { PlusCircle } from 'lucide-react';
 import AddBabyForm from '@/components/baby/AddBabyForm';
 import BabyCard from '@/components/baby/BabyCard';
+import { cn } from '@/lib/utils';
 
 const Index = () => {
   const { babies, currentBaby } = useBaby();
@@ -52,11 +53,23 @@ const Index = () => {
         </div>
       ) : (
         <div className="space-y-4 sm:space-y-6">
-          <div className="mb-4 sm:mb-6">
+          <div className={cn(
+            "mb-4 sm:mb-6 p-4 rounded-lg",
+            currentBaby && `bg-baby-${currentBaby.color}/10`
+          )}>
             <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Dashboard</h1>
             <p className="text-muted-foreground">
               Track your baby's daily activities
             </p>
+            {currentBaby && (
+              <div className="mt-2 text-sm flex items-center gap-2">
+                <div 
+                  className="w-3 h-3 rounded-full"
+                  style={{ backgroundColor: `var(--baby-${currentBaby.color})` }}
+                />
+                <span>Managing <span className="font-semibold">{currentBaby.name}</span>'s activities</span>
+              </div>
+            )}
           </div>
           
           <div className="space-y-4">
@@ -68,9 +81,12 @@ const Index = () => {
                   <Button
                     variant="outline"
                     size="sm"
-                    className="flex items-center gap-2"
+                    className={cn(
+                      "flex items-center gap-2",
+                      currentBaby && `border-baby-${currentBaby.color}`
+                    )}
                   >
-                    <PlusCircle size={16} />
+                    <PlusCircle size={16} className={currentBaby ? `text-baby-${currentBaby.color}` : ""} />
                     <span className="hidden sm:inline">Add Baby</span>
                     <span className="sm:hidden">Add</span>
                   </Button>

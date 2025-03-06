@@ -8,8 +8,10 @@ import { CalendarIcon, ChevronLeft, ChevronRight, Clock } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import QuickLogSection from './QuickLogSection';
 import ActivityFeed from './ActivityFeed';
+import { cn } from '@/lib/utils';
 
 const DailyLogDashboard: React.FC = () => {
+  const { currentBaby } = useBaby();
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   
   const handlePreviousDay = () => {
@@ -29,6 +31,8 @@ const DailyLogDashboard: React.FC = () => {
   };
   
   const isToday = startOfDay(selectedDate).getTime() === startOfDay(new Date()).getTime();
+  
+  const babyColor = currentBaby?.color || 'blue';
   
   return (
     <div className="space-y-4 animate-fade-in">
@@ -51,7 +55,13 @@ const DailyLogDashboard: React.FC = () => {
               <Button 
                 variant={isToday ? "default" : "outline"} 
                 size="sm"
-                className="h-8 min-w-28 justify-start text-left font-normal text-sm"
+                className={cn(
+                  "h-8 min-w-28 justify-start text-left font-normal text-sm",
+                  isToday && currentBaby && `bg-baby-${babyColor} hover:bg-baby-${babyColor}/90`
+                )}
+                style={isToday && currentBaby ? {
+                  backgroundColor: `var(--baby-${babyColor})`,
+                } : {}}
               >
                 <CalendarIcon className="mr-1 h-3 w-3" />
                 {format(selectedDate, 'EEE, MMM d')}

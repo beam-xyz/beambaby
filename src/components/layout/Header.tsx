@@ -17,10 +17,16 @@ const Header = () => {
   ];
 
   return (
-    <header className="w-full bg-white/80 backdrop-blur-lg border-b border-border sticky top-0 z-50">
+    <header className={cn(
+      "w-full backdrop-blur-lg border-b border-border sticky top-0 z-50 transition-colors",
+      currentBaby ? `bg-baby-${currentBaby.color}/10` : "bg-white/80"
+    )}>
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
         <div className="flex items-center gap-2 sm:gap-3">
-          <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-primary/10 flex items-center justify-center">
+          <div className={cn(
+            "w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center",
+            currentBaby ? `bg-baby-${currentBaby.color}` : "bg-primary/10"
+          )}>
             <Sparkles className="text-primary w-5 h-5 sm:w-6 sm:h-6" />
           </div>
           <h1 className="text-lg sm:text-xl font-semibold text-foreground">
@@ -30,7 +36,7 @@ const Header = () => {
 
         <div className="flex-1 max-w-[120px] sm:max-w-none px-2 sm:px-4 flex justify-center">
           {currentBaby && (
-            <div className="px-3 py-1 rounded-full bg-baby-blue text-xs sm:text-sm text-primary-foreground font-medium animate-fade-in truncate"
+            <div className="px-3 py-1 rounded-full text-xs sm:text-sm text-primary-foreground font-medium animate-fade-in truncate"
                  style={{ backgroundColor: `var(--baby-${currentBaby.color})` }}>
               {currentBaby.name}
             </div>
@@ -45,7 +51,7 @@ const Header = () => {
               className={cn(
                 "px-2 sm:px-3 py-2 rounded-md flex items-center gap-1 transition-all duration-200",
                 location.pathname === item.path 
-                  ? "bg-primary text-white" 
+                  ? currentBaby ? `bg-baby-${currentBaby.color} text-white` : "bg-primary text-white"
                   : "text-muted-foreground hover:bg-secondary"
               )}
             >
