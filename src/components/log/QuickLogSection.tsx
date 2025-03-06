@@ -79,40 +79,25 @@ const QuickLogSection: React.FC<QuickLogSectionProps> = ({ selectedDate }) => {
   
   return (
     <Card className="border border-border shadow-sm">
-      <CardContent className="p-4">
-        <div className="flex flex-col sm:flex-row gap-4 items-center">
-          <h3 className="font-medium text-sm text-muted-foreground sm:w-28">Quick Log:</h3>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full">
+      <CardContent className="p-3">
+        <div className="flex flex-col gap-3">
+          <div className="grid grid-cols-2 gap-2">
             {isToday ? (
-              <div>
-                {activeNap ? (
-                  <Button
-                    variant="destructive"
-                    size="sm"
-                    className="w-full sm:w-auto"
-                    onClick={handleEndNap}
-                  >
-                    End Current Nap
-                  </Button>
-                ) : (
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="w-full sm:w-auto"
-                    onClick={handleStartNap}
-                    disabled={!currentBaby}
-                  >
-                    <Play size={14} className="mr-1" />
-                    Start Nap
-                  </Button>
-                )}
-              </div>
+              <Button
+                variant={activeNap ? "destructive" : "outline"}
+                size="sm"
+                className="h-9 text-xs sm:text-sm w-full"
+                onClick={activeNap ? handleEndNap : handleStartNap}
+                disabled={!currentBaby}
+              >
+                <Play size={14} className={`mr-1 ${activeNap ? 'hidden' : 'block'}`} />
+                {activeNap ? "End Nap" : "Start Nap"}
+              </Button>
             ) : (
               <Button
                 variant="outline"
                 size="sm"
-                className="w-full sm:w-auto"
+                className="h-9 text-xs sm:text-sm w-full"
                 disabled={true}
               >
                 <Play size={14} className="mr-1" />
@@ -120,58 +105,16 @@ const QuickLogSection: React.FC<QuickLogSectionProps> = ({ selectedDate }) => {
               </Button>
             )}
             
-            <div className="flex items-center gap-2">
-              <div className="flex items-center border rounded-md overflow-hidden">
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon"
-                  onClick={handleDecrementFeed}
-                  className="h-8 w-8 rounded-none"
-                >
-                  <Minus size={14} />
-                </Button>
-                <Input
-                  type="number"
-                  value={feedAmount}
-                  onChange={handleFeedAmountChange}
-                  step="0.5"
-                  min="0.5"
-                  className="w-14 h-8 rounded-none text-center border-0"
-                />
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon"
-                  onClick={handleIncrementFeed}
-                  className="h-8 w-8 rounded-none"
-                >
-                  <Plus size={14} />
-                </Button>
-              </div>
-              <span className="text-sm">oz</span>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleAddFeed}
-                disabled={!currentBaby}
-                className="ml-2"
-              >
-                <Utensils size={14} className="mr-1" />
-                Add Feed
-              </Button>
-            </div>
-            
             <Dialog open={addFeedDialogOpen} onOpenChange={setAddFeedDialogOpen}>
               <DialogTrigger asChild>
                 <Button
                   variant="outline"
                   size="sm"
-                  className="w-full sm:w-auto"
+                  className="h-9 text-xs sm:text-sm w-full"
                   disabled={!currentBaby}
                 >
                   <CalendarPlus size={14} className="mr-1" />
-                  Manual Feed Entry
+                  Manual Feed
                 </Button>
               </DialogTrigger>
               <DialogContent className="sm:max-w-md max-w-[calc(100%-2rem)]">
@@ -184,6 +127,48 @@ const QuickLogSection: React.FC<QuickLogSectionProps> = ({ selectedDate }) => {
                 />
               </DialogContent>
             </Dialog>
+          </div>
+          
+          <div className="flex items-center gap-2 justify-between">
+            <div className="flex items-center gap-1">
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                onClick={handleDecrementFeed}
+                className="h-7 w-7 rounded"
+              >
+                <Minus size={14} />
+              </Button>
+              <Input
+                type="number"
+                value={feedAmount}
+                onChange={handleFeedAmountChange}
+                step="0.5"
+                min="0.5"
+                className="w-12 h-7 text-center px-1"
+              />
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                onClick={handleIncrementFeed}
+                className="h-7 w-7 rounded"
+              >
+                <Plus size={14} />
+              </Button>
+              <span className="text-xs sm:text-sm">oz</span>
+            </div>
+            <Button
+              variant="default"
+              size="sm"
+              onClick={handleAddFeed}
+              disabled={!currentBaby}
+              className="h-9 text-xs sm:text-sm"
+            >
+              <Utensils size={14} className="mr-1" />
+              Quick Feed
+            </Button>
           </div>
         </div>
       </CardContent>

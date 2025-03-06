@@ -54,32 +54,36 @@ const AddFeedForm: React.FC<AddFeedFormProps> = ({ selectedDate, onSuccess }) =>
   };
   
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="space-y-2">
-        <Label htmlFor="amount">Amount (oz)</Label>
-        <Input
-          id="amount"
-          type="number"
-          value={amount}
-          onChange={handleAmountChange}
-          step="0.5"
-          min="0.5"
-          required
-        />
+    <form onSubmit={handleSubmit} className="space-y-3">
+      <div className="space-y-1.5">
+        <Label htmlFor="amount" className="text-sm">Amount (oz)</Label>
+        <div className="flex items-center">
+          <Input
+            id="amount"
+            type="number"
+            value={amount}
+            onChange={handleAmountChange}
+            step="0.5"
+            min="0.5"
+            required
+            className="h-9"
+          />
+        </div>
       </div>
       
-      <div className="space-y-2">
-        <Label htmlFor="time">Time</Label>
+      <div className="space-y-1.5">
+        <Label htmlFor="time" className="text-sm">Time</Label>
         <Input
           id="time"
           type="time"
           value={time}
           onChange={(e) => setTime(e.target.value)}
           required
+          className="h-9"
         />
       </div>
       
-      <Button type="submit" className="w-full" disabled={!currentBaby}>
+      <Button type="submit" className="w-full h-9 mt-2" disabled={!currentBaby}>
         Add Feed
       </Button>
     </form>

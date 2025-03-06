@@ -31,16 +31,16 @@ const DailyLogDashboard: React.FC = () => {
   const isToday = startOfDay(selectedDate).getTime() === startOfDay(new Date()).getTime();
   
   return (
-    <div className="space-y-6 animate-fade-in">
-      <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center">
-        <h2 className="text-2xl font-semibold">Daily Log</h2>
+    <div className="space-y-4 animate-fade-in">
+      <div className="flex flex-col sm:flex-row gap-2 justify-between items-start sm:items-center mb-2">
+        <h2 className="text-xl font-semibold">Daily Log</h2>
         
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-1 w-full sm:w-auto justify-between sm:justify-normal">
           <Button 
             variant="outline" 
             size="sm" 
             onClick={handlePreviousDay}
-            className="h-9 w-9 p-0"
+            className="h-8 w-8 p-0"
           >
             <ChevronLeft className="h-4 w-4" />
             <span className="sr-only">Previous day</span>
@@ -51,10 +51,10 @@ const DailyLogDashboard: React.FC = () => {
               <Button 
                 variant={isToday ? "default" : "outline"} 
                 size="sm"
-                className="min-w-32 justify-start text-left font-normal"
+                className="h-8 min-w-28 justify-start text-left font-normal text-sm"
               >
-                <CalendarIcon className="mr-2 h-4 w-4" />
-                {format(selectedDate, 'EEEE, MMMM d')}
+                <CalendarIcon className="mr-1 h-3 w-3" />
+                {format(selectedDate, 'EEE, MMM d')}
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0" align="center">
@@ -76,7 +76,7 @@ const DailyLogDashboard: React.FC = () => {
             variant="outline" 
             size="sm" 
             onClick={handleNextDay}
-            className="h-9 w-9 p-0"
+            className="h-8 w-8 p-0"
             disabled={isToday}
           >
             <ChevronRight className="h-4 w-4" />
