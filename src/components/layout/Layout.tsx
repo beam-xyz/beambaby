@@ -16,9 +16,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
-      <main className="flex-1 container mx-auto px-4 py-4 sm:py-6 pb-20 md:pb-6">
+      <main className="flex-1 container mx-auto px-2 sm:px-4 py-2 sm:py-6 pb-20 md:pb-6">
         {showDailyLog && (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 sm:gap-6 mb-4 sm:mb-8">
             <div className="lg:col-span-1 order-2 lg:order-1">
               {children}
             </div>
