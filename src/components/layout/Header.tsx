@@ -27,7 +27,7 @@ const Header = () => {
             "w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center",
             currentBaby ? `bg-baby-${currentBaby.color}` : "bg-primary/10"
           )}>
-            <Sparkles className="text-primary w-5 h-5 sm:w-6 sm:h-6" />
+            <Sparkles className="text-white w-5 h-5 sm:w-6 sm:h-6" />
           </div>
           <h1 className="text-lg sm:text-xl font-semibold text-foreground">
             Beam BabyTracker
