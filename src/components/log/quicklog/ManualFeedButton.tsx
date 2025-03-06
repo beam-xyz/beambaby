@@ -1,25 +1,25 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { CalendarPlus } from 'lucide-react';
-import { 
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Plus } from 'lucide-react';
+import { DialogTrigger } from "@/components/ui/dialog";
+import { cn } from "@/lib/utils";
 
 interface ManualFeedButtonProps {
   disabled: boolean;
+  className?: string;
 }
 
-const ManualFeedButton: React.FC<ManualFeedButtonProps> = ({ disabled }) => {
+const ManualFeedButton: React.FC<ManualFeedButtonProps> = ({ disabled, className }) => {
   return (
     <DialogTrigger asChild>
       <Button
         variant="outline"
         size="sm"
-        className="h-9 text-xs sm:text-sm w-full"
+        className={cn("text-xs", className)}
         disabled={disabled}
       >
-        <CalendarPlus size={14} className="mr-1" />
+        <Plus size={14} className="mr-1" />
         Manual Feed
       </Button>
     </DialogTrigger>

@@ -54,46 +54,47 @@ const QuickFeedControls: React.FC<QuickFeedControlsProps> = ({
   };
   
   return (
-    <div className="flex items-center gap-2 justify-between">
-      <div className="flex items-center gap-1">
+    <div className="flex flex-col gap-2">
+      <div className="flex items-center gap-2 justify-between bg-card p-2 rounded-lg border">
+        <div className="flex items-center gap-1">
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            onClick={handleDecrementFeed}
+            className="h-7 w-7 rounded"
+          >
+            <Minus size={14} />
+          </Button>
+          <Input
+            type="number"
+            value={feedAmount}
+            onChange={handleFeedAmountChange}
+            step="0.5"
+            min="0.5"
+            className="w-12 h-7 text-center px-1"
+          />
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            onClick={handleIncrementFeed}
+            className="h-7 w-7 rounded"
+          >
+            <Plus size={14} />
+          </Button>
+          <span className="text-xs sm:text-sm">oz</span>
+        </div>
         <Button
-          type="button"
-          variant="ghost"
-          size="icon"
-          onClick={handleDecrementFeed}
-          className="h-7 w-7 rounded"
+          variant="default"
+          size="default"
+          onClick={handleAddFeed}
+          disabled={!currentBaby}
         >
-          <Minus size={14} />
+          <Utensils size={16} className="mr-1" />
+          Quick Feed
         </Button>
-        <Input
-          type="number"
-          value={feedAmount}
-          onChange={handleFeedAmountChange}
-          step="0.5"
-          min="0.5"
-          className="w-12 h-7 text-center px-1"
-        />
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon"
-          onClick={handleIncrementFeed}
-          className="h-7 w-7 rounded"
-        >
-          <Plus size={14} />
-        </Button>
-        <span className="text-xs sm:text-sm">oz</span>
       </div>
-      <Button
-        variant="default"
-        size="sm"
-        onClick={handleAddFeed}
-        disabled={!currentBaby}
-        className="h-9 text-xs sm:text-sm"
-      >
-        <Utensils size={14} className="mr-1" />
-        Quick Feed
-      </Button>
     </div>
   );
 };

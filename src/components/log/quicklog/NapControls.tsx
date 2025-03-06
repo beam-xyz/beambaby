@@ -40,15 +40,15 @@ const NapControls: React.FC<NapControlsProps> = ({ isToday, currentBaby, selecte
   };
   
   return (
-    <div className="grid grid-cols-2 gap-2">
+    <div className="flex flex-col gap-2">
       <Button
-        variant={activeNap ? "destructive" : "outline"}
-        size="sm"
-        className="h-9 text-xs sm:text-sm"
+        variant={activeNap ? "destructive" : "default"}
+        size="default"
         onClick={activeNap ? handleEndNap : handleStartNap}
         disabled={!currentBaby || !isToday}
+        className="w-full"
       >
-        <Play size={14} className={`mr-1 ${activeNap ? 'hidden' : 'block'}`} />
+        <Play size={16} className={`mr-1 ${activeNap ? 'hidden' : 'block'}`} />
         {!isToday ? "Nap Tracking" : (activeNap ? "End Nap" : "Start Nap")}
       </Button>
 
@@ -56,7 +56,7 @@ const NapControls: React.FC<NapControlsProps> = ({ isToday, currentBaby, selecte
         <Button
           variant="outline"
           size="sm"
-          className="h-9 text-xs sm:text-sm"
+          className="w-full text-xs text-muted-foreground"
           onClick={() => setAddNapDialogOpen(true)}
           disabled={!currentBaby}
         >

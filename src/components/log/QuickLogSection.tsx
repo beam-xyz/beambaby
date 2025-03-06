@@ -55,35 +55,42 @@ const QuickLogSection: React.FC<QuickLogSectionProps> = ({ selectedDate }) => {
   return (
     <Card className="border border-border shadow-sm">
       <CardContent className="p-3">
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-4">
           {currentBaby && (
             <DailySummary napTotal={dailyNapTotal} feedTotal={dailyFeedTotal} />
           )}
           
-          <NapControls 
-            isToday={isToday} 
-            currentBaby={currentBaby}
-            selectedDate={selectedDate}
-          />
-          
-          <Dialog open={addFeedDialogOpen} onOpenChange={setAddFeedDialogOpen}>
-            <ManualFeedButton disabled={!currentBaby} />
-            <DialogContent className="sm:max-w-md max-w-[calc(100%-2rem)]">
-              <DialogHeader>
-                <DialogTitle>Add Feed</DialogTitle>
-              </DialogHeader>
-              <AddFeedForm 
-                selectedDate={selectedDate} 
-                onSuccess={() => setAddFeedDialogOpen(false)} 
+          <div className="space-y-4">
+            <NapControls 
+              isToday={isToday} 
+              currentBaby={currentBaby}
+              selectedDate={selectedDate}
+            />
+            
+            <div className="space-y-2">
+              <QuickFeedControls 
+                selectedDate={selectedDate}
+                isToday={isToday}
+                currentBaby={currentBaby}
               />
-            </DialogContent>
-          </Dialog>
-          
-          <QuickFeedControls 
-            selectedDate={selectedDate}
-            isToday={isToday}
-            currentBaby={currentBaby}
-          />
+              
+              <Dialog open={addFeedDialogOpen} onOpenChange={setAddFeedDialogOpen}>
+                <ManualFeedButton 
+                  disabled={!currentBaby} 
+                  className="w-full text-xs text-muted-foreground" 
+                />
+                <DialogContent className="sm:max-w-md max-w-[calc(100%-2rem)]">
+                  <DialogHeader>
+                    <DialogTitle>Add Feed</DialogTitle>
+                  </DialogHeader>
+                  <AddFeedForm 
+                    selectedDate={selectedDate} 
+                    onSuccess={() => setAddFeedDialogOpen(false)} 
+                  />
+                </DialogContent>
+              </Dialog>
+            </div>
+          </div>
         </div>
       </CardContent>
     </Card>
