@@ -1,0 +1,60 @@
+
+/* Baby theme animations and effects */
+@keyframes baby-pulse {
+  0% { opacity: 0.8; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.05); }
+  100% { opacity: 0.8; transform: scale(1); }
+}
+
+.baby-theme-glow {
+  animation: baby-pulse 3s ease-in-out infinite;
+}
+
+/* Baby color utility classes */
+.bg-baby-blue {
+  background-color: var(--baby-blue);
+}
+.bg-baby-pink {
+  background-color: var(--baby-pink);
+}
+.bg-baby-mint {
+  background-color: var(--baby-mint);
+}
+.bg-baby-lavender {
+  background-color: var(--baby-lavender);
+}
+.bg-baby-peach {
+  background-color: var(--baby-peach);
+}
+
+.text-baby-blue {
+  color: var(--baby-blue);
+}
+.text-baby-pink {
+  color: var(--baby-pink);
+}
+.text-baby-mint {
+  color: var(--baby-mint);
+}
+.text-baby-lavender {
+  color: var(--baby-lavender);
+}
+.text-baby-peach {
+  color: var(--baby-peach);
+}
+
+.border-baby-blue {
+  border-color: var(--baby-blue);
+}
+.border-baby-pink {
+  border-color: var(--baby-pink);
+}
+.border-baby-mint {
+  border-color: var(--baby-mint);
+}
+.border-baby-lavender {
+  border-color: var(--baby-lavender);
+}
+.border-baby-peach {
+  border-color: var(--baby-peach);
+}

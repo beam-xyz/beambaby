@@ -1,0 +1,23 @@
+
+/* Custom Styles */
+.glass-morphism {
+  @apply bg-white/70 backdrop-blur-md border border-white/20 shadow-sm;
+}
+
+.neo-morphism {
+  @apply bg-secondary rounded-xl shadow-[6px_6px_12px_#d1d9e6,-6px_-6px_12px_#ffffff];
+}
+
+/* Smooth Transitions */
+.page-transition {
+  @apply transition-all duration-300 ease-in-out;
+}
+
+/* Scroll with no scrollbar */
+.scroll-hidden {
+  scrollbar-width: none;
+}
+
+.scroll-hidden::-webkit-scrollbar {
+  display: none;
+}
