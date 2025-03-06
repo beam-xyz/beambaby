@@ -1,4 +1,4 @@
-<lov-codelov-code>
+
 import { type Config } from "tailwindcss";
 import { fontFamily } from "tailwindcss/defaultTheme";
 import plugin from "tailwindcss/plugin";
@@ -151,4 +151,3 @@ export default {
     }),
   ],
 } satisfies Config;
-</lov-code>
