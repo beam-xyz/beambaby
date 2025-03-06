@@ -23,8 +23,8 @@ const Index = () => {
   return (
     <Layout>
       {babies.length === 0 ? (
-        <div className="my-12 max-w-md mx-auto text-center glass-morphism p-8 rounded-lg animate-scale-in">
-          <h2 className="text-2xl font-semibold mb-4">Welcome to BabyTrack</h2>
+        <div className="my-8 sm:my-12 max-w-md mx-auto text-center glass-morphism p-6 sm:p-8 rounded-lg animate-scale-in">
+          <h2 className="text-xl sm:text-2xl font-semibold mb-4">Welcome to BabyTrack</h2>
           <p className="text-muted-foreground mb-6">
             Get started by adding your first baby
           </p>
@@ -33,13 +33,13 @@ const Index = () => {
             <DialogTrigger asChild>
               <Button
                 size="lg"
-                className="bg-primary hover:bg-primary/90 flex items-center gap-2"
+                className="bg-primary hover:bg-primary/90 flex items-center gap-2 w-full sm:w-auto justify-center"
               >
                 <PlusCircle size={16} />
                 <span>Add Your Baby</span>
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-md">
+            <DialogContent className="sm:max-w-md max-w-[calc(100%-2rem)] p-4 sm:p-6">
               <DialogHeader>
                 <DialogTitle>Add Baby</DialogTitle>
                 <DialogDescription>
@@ -51,9 +51,9 @@ const Index = () => {
           </Dialog>
         </div>
       ) : (
-        <div className="space-y-6">
-          <div className="mb-6">
-            <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
+        <div className="space-y-4 sm:space-y-6">
+          <div className="mb-4 sm:mb-6">
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Dashboard</h1>
             <p className="text-muted-foreground">
               Track your baby's daily activities
             </p>
@@ -61,7 +61,7 @@ const Index = () => {
           
           <div className="space-y-4">
             <div className="flex justify-between items-center">
-              <h2 className="text-xl font-semibold">Baby Profiles</h2>
+              <h2 className="text-lg sm:text-xl font-semibold">Baby Profiles</h2>
               
               <Dialog>
                 <DialogTrigger asChild>
@@ -71,10 +71,11 @@ const Index = () => {
                     className="flex items-center gap-2"
                   >
                     <PlusCircle size={16} />
-                    <span>Add Baby</span>
+                    <span className="hidden sm:inline">Add Baby</span>
+                    <span className="sm:hidden">Add</span>
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-md">
+                <DialogContent className="sm:max-w-md max-w-[calc(100%-2rem)] p-4 sm:p-6">
                   <DialogHeader>
                     <DialogTitle>Add Baby</DialogTitle>
                     <DialogDescription>

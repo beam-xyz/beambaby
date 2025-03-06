@@ -151,18 +151,18 @@ const AddBabyForm: React.FC<AddBabyFormProps> = ({
         </div>
       </div>
       
-      <div className="pt-4 flex justify-end">
+      <div className="pt-4 flex flex-col sm:flex-row sm:justify-end gap-2 sm:gap-0">
         {onSuccess && (
           <Button
             type="button"
             variant="outline"
             onClick={onSuccess}
-            className="mr-2"
+            className="sm:mr-2 order-2 sm:order-1"
           >
             Cancel
           </Button>
         )}
-        <Button type="submit" className="bg-primary hover:bg-primary/90">
+        <Button type="submit" className="bg-primary hover:bg-primary/90 order-1 sm:order-2">
           {isEditing ? 'Update' : 'Add'} Baby
         </Button>
       </div>

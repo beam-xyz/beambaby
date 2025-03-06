@@ -17,31 +17,31 @@ const Header = () => {
 
   return (
     <header className="w-full bg-white/80 backdrop-blur-lg border-b border-border sticky top-0 z-50">
-      <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-            <span className="text-primary text-xl font-bold">BT</span>
+      <div className="container mx-auto px-4 py-3 flex justify-between items-center">
+        <div className="flex items-center gap-2 sm:gap-3">
+          <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-primary/10 flex items-center justify-center">
+            <span className="text-primary text-base sm:text-xl font-bold">BT</span>
           </div>
-          <h1 className="text-xl font-semibold text-foreground hidden sm:block">
+          <h1 className="text-lg sm:text-xl font-semibold text-foreground hidden sm:block">
             BabyTrack
           </h1>
         </div>
 
-        <div className="flex-1 px-4 flex justify-center">
+        <div className="flex-1 max-w-[120px] sm:max-w-none px-2 sm:px-4 flex justify-center">
           {currentBaby && (
-            <div className="px-4 py-1 rounded-full bg-baby-blue text-primary-foreground font-medium animate-fade-in">
+            <div className="px-3 py-1 rounded-full bg-baby-blue text-xs sm:text-sm text-primary-foreground font-medium animate-fade-in truncate">
               {currentBaby.name}
             </div>
           )}
         </div>
 
-        <nav className="flex gap-1">
+        <nav className="flex gap-0 sm:gap-1">
           {navItems.map((item) => (
             <Link
               key={item.path}
               to={item.path}
               className={cn(
-                "px-3 py-2 rounded-md flex items-center gap-1 transition-all duration-200",
+                "px-2 sm:px-3 py-2 rounded-md flex items-center gap-1 transition-all duration-200",
                 location.pathname === item.path 
                   ? "bg-primary text-white" 
                   : "text-muted-foreground hover:bg-secondary"
