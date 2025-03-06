@@ -1,4 +1,3 @@
-
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/lib/supabase';
 import { Baby, Nap, Feed, DailyRating } from './types';
@@ -88,9 +87,15 @@ export function useSupabaseStorage() {
   // Add baby mutation
   const addBabyMutation = useMutation({
     mutationFn: async (baby: Omit<Baby, 'id'>) => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error('User not authenticated');
+
       const { data, error } = await supabase
         .from('babies')
-        .insert([baby])
+        .insert([{
+          ...baby,
+          user_id: user.id
+        }])
         .select()
         .single();
       
