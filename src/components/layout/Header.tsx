@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, BarChart2, Settings } from 'lucide-react';
+import { Home, BarChart2, Settings, Beam } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useBaby } from '@/context/BabyContext';
 
@@ -20,10 +20,10 @@ const Header = () => {
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
         <div className="flex items-center gap-2 sm:gap-3">
           <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-primary/10 flex items-center justify-center">
-            <span className="text-primary text-base sm:text-xl font-bold">BT</span>
+            <Beam className="text-primary w-5 h-5 sm:w-6 sm:h-6" />
           </div>
           <h1 className="text-lg sm:text-xl font-semibold text-foreground hidden sm:block">
-            BabyTrack
+            Beam BabyTracker
           </h1>
         </div>
 

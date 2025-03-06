@@ -24,7 +24,7 @@ const Index = () => {
     <Layout>
       {babies.length === 0 ? (
         <div className="my-8 sm:my-12 max-w-md mx-auto text-center glass-morphism p-6 sm:p-8 rounded-lg animate-scale-in">
-          <h2 className="text-xl sm:text-2xl font-semibold mb-4">Welcome to BabyTrack</h2>
+          <h2 className="text-xl sm:text-2xl font-semibold mb-4">Welcome to Beam BabyTracker</h2>
           <p className="text-muted-foreground mb-6">
             Get started by adding your first baby
           </p>
