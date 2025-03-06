@@ -3,9 +3,17 @@ import React, { useState } from 'react';
 import { useBaby } from '@/context/BabyContext';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Play, Utensils, Plus, Minus } from 'lucide-react';
+import { Play, Utensils, Plus, Minus, CalendarPlus } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
+import { 
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import AddFeedForm from './AddFeedForm';
 
 interface QuickLogSectionProps {
   selectedDate: Date;
@@ -14,6 +22,7 @@ interface QuickLogSectionProps {
 const QuickLogSection: React.FC<QuickLogSectionProps> = ({ selectedDate }) => {
   const { currentBaby, activeNap, startNap, endNap, addFeed } = useBaby();
   const [feedAmount, setFeedAmount] = useState<number>(4);
+  const [addFeedDialogOpen, setAddFeedDialogOpen] = useState(false);
   
   const isToday = new Date(selectedDate).setHours(0, 0, 0, 0) === new Date().setHours(0, 0, 0, 0);
   
@@ -74,7 +83,7 @@ const QuickLogSection: React.FC<QuickLogSectionProps> = ({ selectedDate }) => {
         <div className="flex flex-col sm:flex-row gap-4 items-center">
           <h3 className="font-medium text-sm text-muted-foreground sm:w-28">Quick Log:</h3>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full">
             {isToday ? (
               <div>
                 {activeNap ? (
@@ -152,6 +161,29 @@ const QuickLogSection: React.FC<QuickLogSectionProps> = ({ selectedDate }) => {
                 Add Feed
               </Button>
             </div>
+            
+            <Dialog open={addFeedDialogOpen} onOpenChange={setAddFeedDialogOpen}>
+              <DialogTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="w-full sm:w-auto"
+                  disabled={!currentBaby}
+                >
+                  <CalendarPlus size={14} className="mr-1" />
+                  Manual Feed Entry
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-md max-w-[calc(100%-2rem)]">
+                <DialogHeader>
+                  <DialogTitle>Add Feed</DialogTitle>
+                </DialogHeader>
+                <AddFeedForm 
+                  selectedDate={selectedDate} 
+                  onSuccess={() => setAddFeedDialogOpen(false)} 
+                />
+              </DialogContent>
+            </Dialog>
           </div>
         </div>
       </CardContent>
