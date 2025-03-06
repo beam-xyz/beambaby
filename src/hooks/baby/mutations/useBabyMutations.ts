@@ -1,4 +1,3 @@
-
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/lib/supabase';
 import { Baby } from '../types';
@@ -15,13 +14,17 @@ export function useBabyMutations() {
         .from('babies')
         .insert([{
           ...baby,
+          birthdate: baby.birthDate,
           user_id: user.id
         }])
         .select()
         .single();
       
       if (error) throw error;
-      return data;
+      return {
+        ...data,
+        birthDate: new Date(data.birthdate)
+      };
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['babies'] });
@@ -32,13 +35,19 @@ export function useBabyMutations() {
     mutationFn: async ({ id, ...updates }: { id: string } & Partial<Omit<Baby, 'id'>>) => {
       const { data, error } = await supabase
         .from('babies')
-        .update(updates)
+        .update({
+          ...updates,
+          birthdate: updates.birthDate
+        })
         .eq('id', id)
         .select()
         .single();
       
       if (error) throw error;
-      return data;
+      return {
+        ...data,
+        birthDate: new Date(data.birthdate)
+      };
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['babies'] });

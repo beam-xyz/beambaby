@@ -16,7 +16,7 @@ export function useBabiesQuery() {
       
       return data.map((baby: any) => ({
         ...baby,
-        birthDate: new Date(baby.birthDate)
+        birthDate: new Date(baby.birthdate) // Map database birthdate to birthDate
       }));
     }
   });
