@@ -30,7 +30,8 @@ const Header = () => {
 
         <div className="flex-1 max-w-[120px] sm:max-w-none px-2 sm:px-4 flex justify-center">
           {currentBaby && (
-            <div className="px-3 py-1 rounded-full bg-baby-blue text-xs sm:text-sm text-primary-foreground font-medium animate-fade-in truncate">
+            <div className="px-3 py-1 rounded-full bg-baby-blue text-xs sm:text-sm text-primary-foreground font-medium animate-fade-in truncate"
+                 style={{ backgroundColor: `var(--baby-${currentBaby.color})` }}>
               {currentBaby.name}
             </div>
           )}
