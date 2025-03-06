@@ -1,194 +1,145 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import Layout from '@/components/layout/Layout';
-import { useBaby, Baby } from '@/context/BabyContext';
-import BabyCard from '@/components/baby/BabyCard';
-import AddBabyForm from '@/components/baby/AddBabyForm';
-import ThemeSelector from '@/components/settings/ThemeSelector';
 import { Button } from '@/components/ui/button';
-import { PlusCircle, LogOut } from 'lucide-react';
-import { toast } from 'sonner';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
+import ThemeSelector from '@/components/settings/ThemeSelector';
+import AddBabyForm from '@/components/baby/AddBabyForm';
+import { useBaby } from '@/context/BabyContext';
+import BabyCard from '@/components/baby/BabyCard';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { useAuth } from '@/context/AuthContext';
+import { LogOut, UserCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { 
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { 
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 
 const Settings = () => {
-  const { babies } = useBaby();
-  const [editingBaby, setEditingBaby] = useState<Baby | null>(null);
+  const [addBabyDialogOpen, setAddBabyDialogOpen] = React.useState(false);
+  const [editBabyDialogOpen, setEditBabyDialogOpen] = React.useState(false);
+  const { babies, currentBaby } = useBaby();
+  const { user, logout } = useAuth();
   const navigate = useNavigate();
-  
+
   const handleLogout = () => {
-    // In the future, this will handle actual logout logic
-    toast.success("Logged out successfully");
+    logout();
     navigate('/login');
   };
-  
+
   return (
     <Layout>
-      <div className="mb-8 animate-fade-in">
-        <h1 className="text-3xl font-bold tracking-tight">Settings</h1>
+      <div className="mb-6">
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Settings</h1>
         <p className="text-muted-foreground">
-          Manage your baby profiles and app preferences
+          Manage your account and preferences
         </p>
       </div>
-      
-      <div className="space-y-8">
+
+      <div className="space-y-6">
+        {/* Account Section */}
         <Card>
           <CardHeader>
-            <div className="flex justify-between items-center">
-              <div>
-                <CardTitle>Baby Profiles</CardTitle>
-                <CardDescription>
-                  Add, edit, or remove babies from your tracker
-                </CardDescription>
-              </div>
-              
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className="flex items-center gap-2"
-                  >
-                    <PlusCircle size={16} />
-                    <span>Add Baby</span>
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-md">
-                  <DialogHeader>
-                    <DialogTitle>Add Baby</DialogTitle>
-                    <DialogDescription>
-                      Enter your baby's details below.
-                    </DialogDescription>
-                  </DialogHeader>
-                  <AddBabyForm />
-                </DialogContent>
-              </Dialog>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {babies.length === 0 ? (
-              <div className="text-center py-8 bg-secondary rounded-lg">
-                <h3 className="text-lg font-medium mb-2">No Babies Added</h3>
-                <p className="text-muted-foreground mb-4">
-                  Start by adding your first baby
-                </p>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 gap-4 animate-slide-in">
-                {babies.map((baby) => (
-                  <BabyCard 
-                    key={baby.id} 
-                    baby={baby} 
-                    onEditClick={() => setEditingBaby(baby)}
-                  />
-                ))}
-              </div>
-            )}
-            
-            <Dialog open={!!editingBaby} onOpenChange={(open) => !open && setEditingBaby(null)}>
-              <DialogContent className="sm:max-w-md">
-                <DialogHeader>
-                  <DialogTitle>Edit Baby</DialogTitle>
-                  <DialogDescription>
-                    Update your baby's details below.
-                  </DialogDescription>
-                </DialogHeader>
-                {editingBaby && (
-                  <AddBabyForm 
-                    baby={editingBaby} 
-                    isEditing 
-                    onSuccess={() => setEditingBaby(null)}
-                  />
-                )}
-              </DialogContent>
-            </Dialog>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardHeader>
-            <CardTitle>Authentication</CardTitle>
+            <CardTitle>Account</CardTitle>
             <CardDescription>
               Manage your account settings
             </CardDescription>
           </CardHeader>
-          <CardContent>
-            <p className="text-sm text-muted-foreground mb-4">
-              You can sign out of your account below.
-            </p>
-            <Button
-              variant="outline"
-              onClick={handleLogout}
-              className="flex items-center gap-2"
-            >
-              <LogOut size={16} />
-              <span>Sign Out</span>
-            </Button>
+          <CardContent className="space-y-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <UserCircle size={36} className="text-muted-foreground" />
+                <div>
+                  <p className="font-medium">{user?.name || 'User'}</p>
+                  <p className="text-sm text-muted-foreground">{user?.email || 'email@example.com'}</p>
+                </div>
+              </div>
+              <Button variant="outline" size="sm" onClick={handleLogout}>
+                <LogOut size={16} className="mr-2" />
+                Sign Out
+              </Button>
+            </div>
           </CardContent>
         </Card>
-        
+
+        {/* Theme Section */}
         <Card>
           <CardHeader>
-            <CardTitle>Appearance</CardTitle>
+            <CardTitle>Theme</CardTitle>
             <CardDescription>
-              Customize how BabyTrack looks
+              Customize the appearance of the app
             </CardDescription>
           </CardHeader>
           <CardContent>
             <ThemeSelector />
           </CardContent>
         </Card>
-        
+
+        {/* Babies Section */}
         <Card>
           <CardHeader>
-            <CardTitle>Data Management</CardTitle>
-            <CardDescription>
-              Manage your tracking data
-            </CardDescription>
+            <div className="flex justify-between items-center">
+              <div>
+                <CardTitle>Babies</CardTitle>
+                <CardDescription>
+                  Manage babies in your account
+                </CardDescription>
+              </div>
+              <Button size="sm" onClick={() => setAddBabyDialogOpen(true)}>
+                Add Baby
+              </Button>
+            </div>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-muted-foreground mb-4">
-              Your data is stored locally on your device. To clear all data, click the button below.
-            </p>
-            <Button
-              variant="destructive"
-              onClick={() => {
-                if (window.confirm("Are you sure you want to clear all data? This action cannot be undone.")) {
-                  localStorage.clear();
-                  window.location.reload();
-                }
-              }}
-            >
-              Clear All Data
-            </Button>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardHeader>
-            <CardTitle>About BabyTrack</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-muted-foreground">
-              BabyTrack is a simple and intuitive tool for parents to track their babies' daily activities.
-              Version 1.0.0
-            </p>
+            {babies.length === 0 ? (
+              <div className="text-center py-8">
+                <p className="text-muted-foreground">No babies added yet</p>
+                <Button 
+                  variant="outline" 
+                  className="mt-4"
+                  onClick={() => setAddBabyDialogOpen(true)}
+                >
+                  Add Your First Baby
+                </Button>
+              </div>
+            ) : (
+              <div className="grid gap-4 sm:grid-cols-2">
+                {babies.map(baby => (
+                  <BabyCard 
+                    key={baby.id} 
+                    baby={baby} 
+                    isActive={currentBaby?.id === baby.id} 
+                  />
+                ))}
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>
+
+      {/* Add Baby Dialog */}
+      <Dialog open={addBabyDialogOpen} onOpenChange={setAddBabyDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Add Baby</DialogTitle>
+          </DialogHeader>
+          <AddBabyForm onSuccess={() => setAddBabyDialogOpen(false)} />
+        </DialogContent>
+      </Dialog>
+
+      {/* Edit Baby Dialog */}
+      <Dialog open={editBabyDialogOpen} onOpenChange={setEditBabyDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Edit Baby</DialogTitle>
+          </DialogHeader>
+          {currentBaby && (
+            <AddBabyForm 
+              baby={currentBaby} 
+              isEditing={true} 
+              onSuccess={() => setEditBabyDialogOpen(false)} 
+            />
+          )}
+        </DialogContent>
+      </Dialog>
     </Layout>
   );
 };

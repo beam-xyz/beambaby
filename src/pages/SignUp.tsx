@@ -8,29 +8,24 @@ import { Label } from '@/components/ui/label';
 import { Sparkles, Mail, Lock, User, ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useBaby } from '@/context/BabyContext';
+import { useAuth } from '@/context/AuthContext';
 
 const SignUp = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const { isLoading, signUp } = useAuth();
   const navigate = useNavigate();
   const { currentBaby } = useBaby();
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
     
     try {
-      // Mock registration - will be replaced with real auth later
-      setTimeout(() => {
-        toast.success('Account created successfully!');
-        navigate('/');
-      }, 1500);
+      await signUp(name, email, password);
+      navigate('/');
     } catch (error) {
-      toast.error('Could not create account');
-    } finally {
-      setIsLoading(false);
+      // Error is already handled in the signUp function
     }
   };
   

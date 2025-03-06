@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { toast } from 'sonner';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -8,28 +8,27 @@ import { Label } from '@/components/ui/label';
 import { Sparkles, Mail, Lock, ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useBaby } from '@/context/BabyContext';
+import { useAuth } from '@/context/AuthContext';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const { isLoading, login } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const { currentBaby } = useBaby();
+  
+  // Get the page user was trying to access
+  const from = (location.state as any)?.from?.pathname || '/';
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
     
     try {
-      // Mock authentication - will be replaced with real auth later
-      setTimeout(() => {
-        toast.success('Logged in successfully!');
-        navigate('/');
-      }, 1500);
+      await login(email, password);
+      navigate(from, { replace: true });
     } catch (error) {
-      toast.error('Invalid email or password');
-    } finally {
-      setIsLoading(false);
+      // Error is already handled in the login function
     }
   };
   
