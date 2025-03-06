@@ -58,6 +58,18 @@ export default {
           mint: "#D1FFE8",
           lavender: "#E8D1FF",
           peach: "#FFE8D1"
+        },
+        purple: {
+          500: "#9061F9"
+        },
+        teal: {
+          500: "#14B8A6"
+        },
+        rose: {
+          500: "#F43F5E"
+        },
+        blue: {
+          500: "#3B82F6" 
         }
       },
       borderRadius: {

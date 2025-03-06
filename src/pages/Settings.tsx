@@ -4,6 +4,7 @@ import Layout from '@/components/layout/Layout';
 import { useBaby, Baby } from '@/context/BabyContext';
 import BabyCard from '@/components/baby/BabyCard';
 import AddBabyForm from '@/components/baby/AddBabyForm';
+import ThemeSelector from '@/components/settings/ThemeSelector';
 import { Button } from '@/components/ui/button';
 import { PlusCircle } from 'lucide-react';
 import { 
@@ -31,7 +32,7 @@ const Settings = () => {
       <div className="mb-8 animate-fade-in">
         <h1 className="text-3xl font-bold tracking-tight">Settings</h1>
         <p className="text-muted-foreground">
-          Manage your baby profiles
+          Manage your baby profiles and app preferences
         </p>
       </div>
       
@@ -105,6 +106,18 @@ const Settings = () => {
                 )}
               </DialogContent>
             </Dialog>
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardHeader>
+            <CardTitle>Appearance</CardTitle>
+            <CardDescription>
+              Customize how BabyTrack looks
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ThemeSelector />
           </CardContent>
         </Card>
         
