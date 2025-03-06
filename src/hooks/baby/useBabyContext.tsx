@@ -1,30 +1,9 @@
 
 import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
-import { Baby, Nap, Feed, DailyRating } from '@/types/baby';
+import { Baby, Nap, Feed, DailyRating, BabyContextType } from './types';
 import { generateId, getTodayDate, isSameDay } from '@/utils/babyUtils';
-import { loadFromStorage, saveToStorage } from '@/utils/storageUtils';
-
-// Types
-type BabyContextType = {
-  babies: Baby[];
-  currentBaby?: Baby;
-  naps: Nap[];
-  feeds: Feed[];
-  ratings: DailyRating[];
-  activeNap?: Nap;
-  addBaby: (baby: Omit<Baby, 'id'>) => void;
-  editBaby: (id: string, baby: Partial<Omit<Baby, 'id'>>) => void;
-  deleteBaby: (id: string) => void;
-  setCurrentBaby: (babyId: string) => void;
-  startNap: () => void;
-  endNap: () => void;
-  addNap: (nap: Omit<Nap, 'id'>) => void;
-  addFeed: (feed: Omit<Feed, 'id'>) => void;
-  addRating: (rating: Omit<DailyRating, 'id'>) => void;
-  getTodaysFeedTotal: () => number;
-  getTodaysNapTotal: () => number;
-  getTodaysRating: () => number | undefined;
-};
+import { loadBabyDataFromStorage, saveBabyDataToStorage } from './storage';
+import { calculateTodaysNapTotal, calculateTodaysFeedTotal, getTodaysRating } from './utils';
 
 const BabyContext = createContext<BabyContextType | undefined>(undefined);
 
@@ -39,7 +18,7 @@ export const BabyProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   // Load data from localStorage on initial render
   useEffect(() => {
-    const data = loadFromStorage();
+    const data = loadBabyDataFromStorage();
     setBabies(data.babies);
     setCurrentBaby(data.currentBaby);
     setNaps(data.naps);
@@ -50,30 +29,30 @@ export const BabyProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   // Save data to localStorage whenever it changes
   useEffect(() => {
-    saveToStorage('babies', babies);
+    saveBabyDataToStorage('babies', babies);
   }, [babies]);
 
   useEffect(() => {
     if (currentBaby) {
-      saveToStorage('currentBabyId', currentBaby.id);
+      saveBabyDataToStorage('currentBabyId', currentBaby.id);
     }
   }, [currentBaby]);
 
   useEffect(() => {
-    saveToStorage('naps', naps);
+    saveBabyDataToStorage('naps', naps);
   }, [naps]);
 
   useEffect(() => {
-    saveToStorage('feeds', feeds);
+    saveBabyDataToStorage('feeds', feeds);
   }, [feeds]);
 
   useEffect(() => {
-    saveToStorage('ratings', ratings);
+    saveBabyDataToStorage('ratings', ratings);
   }, [ratings]);
 
   useEffect(() => {
     if (activeNap) {
-      saveToStorage('activeNap', activeNap);
+      saveBabyDataToStorage('activeNap', activeNap);
     } else {
       localStorage.removeItem('activeNap');
     }
@@ -187,44 +166,6 @@ export const BabyProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }
   };
 
-  const getTodaysFeedTotal = () => {
-    if (!currentBaby) return 0;
-    
-    const today = getTodayDate();
-    return feeds
-      .filter(feed => feed.babyId === currentBaby.id && isSameDay(feed.date, today))
-      .reduce((total, feed) => total + feed.amount, 0);
-  };
-
-  const getTodaysNapTotal = () => {
-    if (!currentBaby) return 0;
-    
-    const today = getTodayDate();
-    
-    return naps
-      .filter(nap => {
-        return nap.babyId === currentBaby.id && 
-              isSameDay(nap.date, today) && 
-              nap.endTime !== undefined;
-      })
-      .reduce((total, nap) => {
-        if (!nap.endTime) return total;
-        const napDuration = (nap.endTime.getTime() - nap.startTime.getTime()) / (1000 * 60); // in minutes
-        return total + napDuration;
-      }, 0);
-  };
-
-  const getTodaysRating = () => {
-    if (!currentBaby) return undefined;
-    
-    const today = getTodayDate();
-    const todayRating = ratings.find(
-      rating => rating.babyId === currentBaby.id && isSameDay(rating.date, today)
-    );
-    
-    return todayRating?.rating;
-  };
-
   const value = {
     babies,
     currentBaby,
@@ -241,9 +182,9 @@ export const BabyProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     addNap,
     addFeed,
     addRating,
-    getTodaysFeedTotal,
-    getTodaysNapTotal,
-    getTodaysRating
+    getTodaysFeedTotal: () => calculateTodaysFeedTotal(feeds, currentBaby?.id),
+    getTodaysNapTotal: () => calculateTodaysNapTotal(naps, currentBaby?.id),
+    getTodaysRating: () => getTodaysRating(ratings, currentBaby?.id)
   };
 
   return <BabyContext.Provider value={value}>{children}</BabyContext.Provider>;
