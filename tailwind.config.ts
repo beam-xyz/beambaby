@@ -68,6 +68,9 @@ export default {
       fontFamily: {
         sans: ["Inter var", ...fontFamily.sans],
       },
+      transitionTimingFunction: {
+        'smooth': 'cubic-bezier(0.4, 0, 0.2, 1)',
+      },
       keyframes: {
         "accordion-down": {
           from: { height: "0" },

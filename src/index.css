@@ -89,7 +89,7 @@
 
 /* Smooth Transitions */
 .page-transition {
-  @apply transition-all duration-300 ease-smooth;
+  @apply transition-all duration-300 ease-in-out;
 }
 
 /* Scroll with no scrollbar */
