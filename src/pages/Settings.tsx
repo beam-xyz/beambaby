@@ -6,7 +6,9 @@ import BabyCard from '@/components/baby/BabyCard';
 import AddBabyForm from '@/components/baby/AddBabyForm';
 import ThemeSelector from '@/components/settings/ThemeSelector';
 import { Button } from '@/components/ui/button';
-import { PlusCircle } from 'lucide-react';
+import { PlusCircle, LogOut } from 'lucide-react';
+import { toast } from 'sonner';
+import { useNavigate } from 'react-router-dom';
 import { 
   Dialog,
   DialogContent,
@@ -26,6 +28,13 @@ import {
 const Settings = () => {
   const { babies } = useBaby();
   const [editingBaby, setEditingBaby] = useState<Baby | null>(null);
+  const navigate = useNavigate();
+  
+  const handleLogout = () => {
+    // In the future, this will handle actual logout logic
+    toast.success("Logged out successfully");
+    navigate('/login');
+  };
   
   return (
     <Layout>
@@ -106,6 +115,28 @@ const Settings = () => {
                 )}
               </DialogContent>
             </Dialog>
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardHeader>
+            <CardTitle>Authentication</CardTitle>
+            <CardDescription>
+              Manage your account settings
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-muted-foreground mb-4">
+              You can sign out of your account below.
+            </p>
+            <Button
+              variant="outline"
+              onClick={handleLogout}
+              className="flex items-center gap-2"
+            >
+              <LogOut size={16} />
+              <span>Sign Out</span>
+            </Button>
           </CardContent>
         </Card>
         

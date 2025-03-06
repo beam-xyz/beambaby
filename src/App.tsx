@@ -6,6 +6,8 @@ import Index from './pages/Index';
 import Analytics from './pages/Analytics';
 import Settings from './pages/Settings';
 import Rating from './pages/Rating';
+import Login from './pages/Login';
+import SignUp from './pages/SignUp';
 import NotFound from './pages/NotFound';
 import { Toaster as SonnerToaster } from 'sonner';
 
@@ -19,6 +21,8 @@ function App() {
             <Route path="/analytics" element={<Analytics />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/rating" element={<Rating />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<SignUp />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Router>
