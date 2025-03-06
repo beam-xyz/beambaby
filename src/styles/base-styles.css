@@ -1,3 +1,4 @@
+
 @layer base {
   * {
     @apply border-border;
@@ -20,9 +21,9 @@
 
 /* Keep existing root styles */
 #root {
-  max-width: 1280px;
+  max-width: 100%;
   margin: 0 auto;
-  padding: 1rem;
+  padding: 0;
   text-align: center;
 }
 

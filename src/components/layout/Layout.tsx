@@ -14,7 +14,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const showDailyLog = location.pathname === '/';
   
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen w-full">
       <Header />
       <main className="flex-1 container mx-auto px-2 sm:px-4 py-2 sm:py-6 pb-20 md:pb-6">
         {showDailyLog && (
@@ -31,7 +31,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         {!showDailyLog && children}
       </main>
       <MobileFooter />
-      <footer className="border-t border-border py-3 sm:py-4 text-center text-xs sm:text-sm text-muted-foreground md:block hidden">
+      <footer className="border-t border-border py-3 sm:py-4 text-center text-xs sm:text-sm text-muted-foreground md:block hidden w-full">
         <div className="container mx-auto px-4">
           <p>&copy; {new Date().getFullYear()} BabyTrack. All rights reserved.</p>
         </div>

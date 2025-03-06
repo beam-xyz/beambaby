@@ -21,7 +21,7 @@ const Header = () => {
       "w-full backdrop-blur-lg border-b border-border sticky top-0 z-50 transition-colors",
       currentBaby ? `bg-baby-${currentBaby.color}/10` : "bg-white/80"
     )}>
-      <div className="container mx-auto px-4 py-3 flex justify-between items-center">
+      <div className="container mx-auto px-4 py-3 flex justify-between items-center w-full">
         <div className="flex items-center gap-2 sm:gap-3">
           <div className={cn(
             "w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center",
