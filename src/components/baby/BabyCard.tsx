@@ -20,12 +20,14 @@ import { toast } from 'sonner';
 interface BabyCardProps {
   baby: Baby;
   onEditClick?: () => void;
+  isActive?: boolean; // Add this prop to fix the error
 }
 
-const BabyCard: React.FC<BabyCardProps> = ({ baby, onEditClick }) => {
+const BabyCard: React.FC<BabyCardProps> = ({ baby, onEditClick, isActive: isActiveProp }) => {
   const { currentBaby, setCurrentBaby, deleteBaby } = useBaby();
   
-  const isActive = currentBaby?.id === baby.id;
+  // Use the prop if provided, otherwise determine active state from context
+  const isActive = isActiveProp !== undefined ? isActiveProp : currentBaby?.id === baby.id;
   
   const handleSelect = () => {
     if (!isActive) {
