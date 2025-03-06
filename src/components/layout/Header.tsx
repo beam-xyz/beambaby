@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, BarChart2, Settings, Sparkles } from 'lucide-react';
+import { Home, BarChart2, Settings, Sparkles, Star } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useBaby } from '@/context/BabyContext';
 
@@ -12,6 +12,7 @@ const Header = () => {
   const navItems = [
     { path: '/', icon: Home, label: 'Home' },
     { path: '/analytics', icon: BarChart2, label: 'Analytics' },
+    { path: '/rating', icon: Star, label: 'Rating' },
     { path: '/settings', icon: Settings, label: 'Settings' },
   ];
 
