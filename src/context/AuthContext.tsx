@@ -102,10 +102,13 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   
   const loginWithGoogle = async () => {
     try {
+      // Get the current window origin for proper redirection
+      const origin = window.location.origin;
+      
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: window.location.origin,
+          redirectTo: `${origin}/`,
         },
       });
       
