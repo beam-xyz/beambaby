@@ -1,9 +1,21 @@
 
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useBaby } from '@/context/BabyContext';
 import { Card, CardContent } from '@/components/ui/card';
 import { format, isSameDay } from 'date-fns';
-import { Utensils, Moon, Star } from 'lucide-react';
+import { Utensils, Moon, Star, Trash2 } from 'lucide-react';
+import { 
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogCancel,
+  AlertDialogAction,
+} from '@/components/ui/alert-dialog';
+import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
 
 interface ActivityFeedProps {
   selectedDate: Date;
@@ -17,7 +29,9 @@ type Activity = {
 };
 
 const ActivityFeed: React.FC<ActivityFeedProps> = ({ selectedDate }) => {
-  const { currentBaby, naps, feeds, ratings } = useBaby();
+  const { currentBaby, naps, feeds, ratings, deleteNap, deleteFeed } = useBaby();
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState<{ id: string, type: 'nap' | 'feed' } | null>(null);
   
   const activities = useMemo(() => {
     if (!currentBaby) return [];
@@ -73,6 +87,26 @@ const ActivityFeed: React.FC<ActivityFeedProps> = ({ selectedDate }) => {
     // Sort by time (newest first)
     return allActivities.sort((a, b) => b.time.getTime() - a.time.getTime());
   }, [currentBaby, naps, feeds, ratings, selectedDate]);
+
+  const handleDeleteClick = (id: string, type: 'nap' | 'feed') => {
+    setItemToDelete({ id, type });
+    setDeleteDialogOpen(true);
+  };
+
+  const confirmDelete = () => {
+    if (!itemToDelete) return;
+
+    if (itemToDelete.type === 'nap') {
+      deleteNap(itemToDelete.id);
+      toast.success('Nap deleted successfully');
+    } else if (itemToDelete.type === 'feed') {
+      deleteFeed(itemToDelete.id);
+      toast.success('Feed deleted successfully');
+    }
+
+    setDeleteDialogOpen(false);
+    setItemToDelete(null);
+  };
   
   if (!currentBaby) {
     return (
@@ -131,32 +165,44 @@ const ActivityFeed: React.FC<ActivityFeedProps> = ({ selectedDate }) => {
                     </div>
                   </div>
                   
-                  <div className="text-right">
-                    {activity.type === 'nap' && (
-                      <div>
-                        {activity.details.duration ? (
-                          <span className="font-semibold text-sm">
-                            {Math.floor(activity.details.duration / 60) > 0 ? 
-                              `${Math.floor(activity.details.duration / 60)}h ` : ''}
-                            {activity.details.duration % 60}m
-                          </span>
-                        ) : (
-                          <span className="text-xs text-primary font-medium">In Progress</span>
-                        )}
-                      </div>
-                    )}
+                  <div className="flex items-center gap-2">
+                    <div className="text-right">
+                      {activity.type === 'nap' && (
+                        <div>
+                          {activity.details.duration ? (
+                            <span className="font-semibold text-sm">
+                              {Math.floor(activity.details.duration / 60) > 0 ? 
+                                `${Math.floor(activity.details.duration / 60)}h ` : ''}
+                              {activity.details.duration % 60}m
+                            </span>
+                          ) : (
+                            <span className="text-xs text-primary font-medium">In Progress</span>
+                          )}
+                        </div>
+                      )}
+                      
+                      {activity.type === 'feed' && (
+                        <div className="font-semibold text-sm">
+                          {activity.details.amount} oz
+                        </div>
+                      )}
+                      
+                      {activity.type === 'rating' && (
+                        <div className="font-semibold text-sm flex items-center gap-0.5">
+                          {activity.details.rating}/10
+                          <Star size={12} className="fill-baby-peach text-baby-peach" />
+                        </div>
+                      )}
+                    </div>
                     
-                    {activity.type === 'feed' && (
-                      <div className="font-semibold text-sm">
-                        {activity.details.amount} oz
-                      </div>
-                    )}
-                    
-                    {activity.type === 'rating' && (
-                      <div className="font-semibold text-sm flex items-center gap-0.5">
-                        {activity.details.rating}/10
-                        <Star size={12} className="fill-baby-peach text-baby-peach" />
-                      </div>
+                    {(activity.type === 'nap' || activity.type === 'feed') && (
+                      <button 
+                        onClick={() => handleDeleteClick(activity.id, activity.type)}
+                        className="text-muted-foreground hover:text-destructive transition-colors p-1"
+                        aria-label={`Delete ${activity.type}`}
+                      >
+                        <Trash2 size={14} />
+                      </button>
                     )}
                   </div>
                 </div>
@@ -165,6 +211,23 @@ const ActivityFeed: React.FC<ActivityFeedProps> = ({ selectedDate }) => {
           </Card>
         ))}
       </div>
+
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will permanently delete this {itemToDelete?.type} record. This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };

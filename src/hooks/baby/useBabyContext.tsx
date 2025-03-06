@@ -1,4 +1,3 @@
-
 import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 import { Baby, Nap, Feed, DailyRating, BabyContextType } from './types';
 import { generateId, getTodayDate, isSameDay } from '@/utils/babyUtils';
@@ -139,9 +138,22 @@ export const BabyProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     setNaps(prev => [...prev, newNap]);
   };
 
+  const deleteNap = (id: string) => {
+    setNaps(prev => prev.filter(nap => nap.id !== id));
+    
+    // If this is the active nap, clear it
+    if (activeNap?.id === id) {
+      setActiveNap(undefined);
+    }
+  };
+
   const addFeed = (feedData: Omit<Feed, 'id'>) => {
     const newFeed = { ...feedData, id: generateId() };
     setFeeds(prev => [...prev, newFeed]);
+  };
+
+  const deleteFeed = (id: string) => {
+    setFeeds(prev => prev.filter(feed => feed.id !== id));
   };
 
   const addRating = (ratingData: Omit<DailyRating, 'id'>) => {
@@ -180,7 +192,9 @@ export const BabyProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     startNap,
     endNap,
     addNap,
+    deleteNap,
     addFeed,
+    deleteFeed,
     addRating,
     getTodaysFeedTotal: () => calculateTodaysFeedTotal(feeds, currentBaby?.id),
     getTodaysNapTotal: () => calculateTodaysNapTotal(naps, currentBaby?.id),
