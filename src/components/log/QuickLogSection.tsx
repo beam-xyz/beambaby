@@ -60,25 +60,24 @@ const QuickLogSection: React.FC<QuickLogSectionProps> = ({ selectedDate }) => {
             <DailySummary napTotal={dailyNapTotal} feedTotal={dailyFeedTotal} />
           )}
           
-          <div className="grid grid-cols-2 gap-2">
-            <NapControls 
-              isToday={isToday} 
-              currentBaby={currentBaby} 
-            />
-            
-            <Dialog open={addFeedDialogOpen} onOpenChange={setAddFeedDialogOpen}>
-              <ManualFeedButton disabled={!currentBaby} />
-              <DialogContent className="sm:max-w-md max-w-[calc(100%-2rem)]">
-                <DialogHeader>
-                  <DialogTitle>Add Feed</DialogTitle>
-                </DialogHeader>
-                <AddFeedForm 
-                  selectedDate={selectedDate} 
-                  onSuccess={() => setAddFeedDialogOpen(false)} 
-                />
-              </DialogContent>
-            </Dialog>
-          </div>
+          <NapControls 
+            isToday={isToday} 
+            currentBaby={currentBaby}
+            selectedDate={selectedDate}
+          />
+          
+          <Dialog open={addFeedDialogOpen} onOpenChange={setAddFeedDialogOpen}>
+            <ManualFeedButton disabled={!currentBaby} />
+            <DialogContent className="sm:max-w-md max-w-[calc(100%-2rem)]">
+              <DialogHeader>
+                <DialogTitle>Add Feed</DialogTitle>
+              </DialogHeader>
+              <AddFeedForm 
+                selectedDate={selectedDate} 
+                onSuccess={() => setAddFeedDialogOpen(false)} 
+              />
+            </DialogContent>
+          </Dialog>
           
           <QuickFeedControls 
             selectedDate={selectedDate}
