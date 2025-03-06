@@ -23,7 +23,7 @@ const Header = () => {
           <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-primary/10 flex items-center justify-center">
             <Sparkles className="text-primary w-5 h-5 sm:w-6 sm:h-6" />
           </div>
-          <h1 className="text-lg sm:text-xl font-semibold text-foreground hidden sm:block">
+          <h1 className="text-lg sm:text-xl font-semibold text-foreground">
             Beam BabyTracker
           </h1>
         </div>
@@ -36,7 +36,7 @@ const Header = () => {
           )}
         </div>
 
-        <nav className="flex gap-0 sm:gap-1">
+        <nav className="hidden md:flex gap-0 sm:gap-1">
           {navItems.map((item) => (
             <Link
               key={item.path}
