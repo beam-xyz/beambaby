@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useBaby } from '@/context/BabyContext';
 import { Card, CardContent } from '@/components/ui/card';
@@ -27,7 +26,6 @@ const QuickLogSection: React.FC<QuickLogSectionProps> = ({ selectedDate }) => {
   
   const isToday = new Date(selectedDate).setHours(0, 0, 0, 0) === new Date().setHours(0, 0, 0, 0);
   
-  // Calculate daily totals for the selected date
   const dailyFeedTotal = React.useMemo(() => {
     if (!currentBaby) return 0;
     
@@ -103,7 +101,6 @@ const QuickLogSection: React.FC<QuickLogSectionProps> = ({ selectedDate }) => {
       return;
     }
     
-    // For today, use current time. For past days, use noon
     const feedTime = isToday ? new Date() : new Date(selectedDate.setHours(12, 0, 0, 0));
     
     addFeed({
@@ -120,18 +117,17 @@ const QuickLogSection: React.FC<QuickLogSectionProps> = ({ selectedDate }) => {
     <Card className="border border-border shadow-sm">
       <CardContent className="p-3">
         <div className="flex flex-col gap-3">
-          {/* Daily Summary Display */}
           {currentBaby && (
             <div className="grid grid-cols-2 gap-2 bg-muted/50 rounded-md p-2 mb-1">
-              <div className="flex items-center justify-center gap-1.5 text-sm">
-                <GlassWater size={14} className="text-baby-mint" />
-                <span className="font-medium">{dailyFeedTotal} oz</span>
-              </div>
               <div className="flex items-center justify-center gap-1.5 text-sm">
                 <Moon size={14} className="text-baby-lavender" />
                 <span className="font-medium">
                   {dailyNapTotal > 0 ? formatNapTime(dailyNapTotal) : '0m'}
                 </span>
+              </div>
+              <div className="flex items-center justify-center gap-1.5 text-sm">
+                <GlassWater size={14} className="text-baby-mint" />
+                <span className="font-medium">{dailyFeedTotal} oz</span>
               </div>
             </div>
           )}
