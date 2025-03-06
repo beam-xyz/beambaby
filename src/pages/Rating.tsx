@@ -5,6 +5,7 @@ import DailyRating from '@/components/tracking/DailyRating';
 import { useBaby } from '@/context/BabyContext';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { format } from 'date-fns';
+import { Star } from 'lucide-react';
 
 const Rating = () => {
   const { currentBaby, getTodaysRating } = useBaby();
