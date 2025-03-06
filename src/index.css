@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -35,6 +34,13 @@
     --ring: 222 84% 5%;
 
     --radius: 0.75rem;
+    
+    /* Baby theme colors */
+    --baby-blue: #A8D1FF;
+    --baby-pink: #FFD1E8;
+    --baby-mint: #D1FFE8;
+    --baby-lavender: #E8D1FF;
+    --baby-peach: #FFE8D1;
   }
 
   [data-theme="purple"] {
@@ -155,6 +161,13 @@
     --border: 217 33% 18%;
     --input: 217 33% 18%;
     --ring: 213 27% 84%;
+
+    /* Baby theme colors - slightly darker for dark mode */
+    --baby-blue: #86AFDB;
+    --baby-pink: #DBAFCC;
+    --baby-mint: #AFDBC6;
+    --baby-lavender: #C6AFDB;
+    --baby-peach: #DBC6AF;
   }
 }
 

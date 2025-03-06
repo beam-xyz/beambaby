@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useBaby, Baby } from '@/context/BabyContext';
 import { format } from 'date-fns';
@@ -9,11 +10,13 @@ import { Label } from '@/components/ui/label';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { toast } from 'sonner';
+
 interface AddBabyFormProps {
   onSuccess?: () => void;
   baby?: Baby;
   isEditing?: boolean;
 }
+
 const colorOptions: {
   value: Baby['color'];
   label: string;
@@ -33,6 +36,7 @@ const colorOptions: {
   value: 'peach',
   label: 'Peach'
 }];
+
 const AddBabyForm: React.FC<AddBabyFormProps> = ({
   onSuccess,
   baby,
@@ -47,6 +51,7 @@ const AddBabyForm: React.FC<AddBabyFormProps> = ({
   const [color, setColor] = useState<Baby['color']>(baby?.color || 'blue');
   const [nameError, setNameError] = useState('');
   const [dateError, setDateError] = useState('');
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -65,6 +70,7 @@ const AddBabyForm: React.FC<AddBabyFormProps> = ({
       setDateError('');
     }
     if (!isValid) return;
+
     if (isEditing && baby) {
       editBaby(baby.id, {
         name,
@@ -89,6 +95,7 @@ const AddBabyForm: React.FC<AddBabyFormProps> = ({
     }
     onSuccess?.();
   };
+
   return <form onSubmit={handleSubmit} className="space-y-4">
       <div className="space-y-2">
         <Label htmlFor="name">
@@ -118,10 +125,26 @@ const AddBabyForm: React.FC<AddBabyFormProps> = ({
       
       <div className="space-y-2">
         <Label>Color Theme</Label>
-        <div className="flex flex-wrap gap-2">
-          {colorOptions.map(option => <button key={option.value} type="button" style={{
-          backgroundColor: `var(--baby-${option.value})`
-        }} onClick={() => setColor(option.value)} title={option.label} className="" />)}
+        <div className="flex flex-wrap gap-3">
+          {colorOptions.map(option => (
+            <button
+              key={option.value}
+              type="button"
+              className={cn(
+                "w-10 h-10 rounded-full transition-all flex items-center justify-center",
+                color === option.value ? "ring-2 ring-primary ring-offset-2" : "hover:scale-110"
+              )}
+              style={{
+                backgroundColor: `var(--baby-${option.value})`,
+              }}
+              onClick={() => setColor(option.value)}
+              title={option.label}
+            >
+              {color === option.value && (
+                <div className="w-2 h-2 bg-white rounded-full" />
+              )}
+            </button>
+          ))}
         </div>
       </div>
       
@@ -135,4 +158,5 @@ const AddBabyForm: React.FC<AddBabyFormProps> = ({
       </div>
     </form>;
 };
+
 export default AddBabyForm;
