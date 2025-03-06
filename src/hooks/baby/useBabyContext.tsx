@@ -1,12 +1,15 @@
-
 import React, { createContext, useContext, ReactNode, useState, useCallback } from 'react';
 import { BabyContextType } from './types';
 import { useSupabaseStorage } from './useSupabaseStorage';
 import { calculateTodaysNapTotal, calculateTodaysFeedTotal, getTodaysRating } from './utils';
+import { supabase } from '@/lib/supabase';
+import { useQueryClient } from '@tanstack/react-query';
 
 const BabyContext = createContext<BabyContextType | undefined>(undefined);
 
 export const BabyProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const queryClient = useQueryClient();
+
   // Get all state from Supabase storage hook
   const {
     babies,
@@ -25,7 +28,7 @@ export const BabyProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   } = useSupabaseStorage();
 
   // Local state
-  const [currentBaby, setCurrentBaby] = useState(babies[0]);
+  const [currentBaby, setCurrentBaby] = useState<BabyContextType['currentBaby']>(babies[0]);
   const [activeNap, setActiveNap] = useState<BabyContextType['activeNap']>();
 
   // Baby management
@@ -77,10 +80,28 @@ export const BabyProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const endNap = useCallback(() => {
     if (!activeNap) return;
 
-    const updatedNap = { ...activeNap, endTime: new Date() };
-    editBabyInDb({ id: activeNap.id, ...updatedNap });
-    setActiveNap(undefined);
-  }, [activeNap, editBabyInDb]);
+    // Update the nap with an end time directly through Supabase
+    // We can't use editBabyInDb here since it's for editing baby profiles, not naps
+    const update = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const endTime = new Date();
+      
+      const { error } = await supabase
+        .from('naps')
+        .update({ endtime: endTime })
+        .eq('id', activeNap.id);
+      
+      if (!error) {
+        // Invalidate the naps query to refresh the data
+        queryClient.invalidateQueries({ queryKey: ['naps'] });
+        setActiveNap(undefined);
+      }
+    };
+    
+    update();
+  }, [activeNap, queryClient]);
 
   const value: BabyContextType = {
     babies,

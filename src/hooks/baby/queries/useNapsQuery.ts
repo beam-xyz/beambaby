@@ -15,9 +15,10 @@ export function useNapsQuery() {
       if (error) throw error;
       
       return data.map((nap: any) => ({
-        ...nap,
-        startTime: new Date(nap.startTime),
-        endTime: nap.endTime ? new Date(nap.endTime) : undefined,
+        id: nap.id,
+        babyId: nap.baby_id,
+        startTime: new Date(nap.starttime),
+        endTime: nap.endtime ? new Date(nap.endtime) : undefined,
         date: new Date(nap.date)
       }));
     }

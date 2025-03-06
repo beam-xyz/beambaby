@@ -15,7 +15,9 @@ export function useFeedsQuery() {
       if (error) throw error;
       
       return data.map((feed: any) => ({
-        ...feed,
+        id: feed.id,
+        babyId: feed.baby_id,
+        amount: feed.amount,
         time: new Date(feed.time),
         date: new Date(feed.date)
       }));

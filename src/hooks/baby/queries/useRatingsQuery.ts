@@ -8,14 +8,16 @@ export function useRatingsQuery() {
     queryKey: ['ratings'],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('ratings')
+        .from('daily_ratings')
         .select('*')
         .order('date', { ascending: false });
       
       if (error) throw error;
       
       return data.map((rating: any) => ({
-        ...rating,
+        id: rating.id,
+        babyId: rating.baby_id,
+        rating: rating.rating,
         date: new Date(rating.date)
       }));
     }
