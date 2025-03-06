@@ -1,4 +1,3 @@
-
 import { type Config } from "tailwindcss";
 import { fontFamily } from "tailwindcss/defaultTheme";
 import plugin from "tailwindcss/plugin";
@@ -53,11 +52,11 @@ export default {
           foreground: "hsl(var(--card-foreground))",
         },
         baby: {
-          blue: "#A8D1FF",
-          pink: "#FFD1E8",
-          mint: "#D1FFE8",
-          lavender: "#E8D1FF",
-          peach: "#FFE8D1"
+          blue: "#6494D9",
+          pink: "#D97A9D",
+          mint: "#65C194",
+          lavender: "#9B87F5",
+          peach: "#D9916C"
         },
         purple: {
           500: "#9061F9"
