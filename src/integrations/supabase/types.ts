@@ -11,21 +11,30 @@ export type Database = {
     Tables: {
       babies: {
         Row: {
+          birthdate: string
+          color: string | null
           created_at: string | null
           id: string
           name: string
+          updated_at: string | null
           user_id: string
         }
         Insert: {
+          birthdate?: string
+          color?: string | null
           created_at?: string | null
           id?: string
           name: string
+          updated_at?: string | null
           user_id: string
         }
         Update: {
+          birthdate?: string
+          color?: string | null
           created_at?: string | null
           id?: string
           name?: string
+          updated_at?: string | null
           user_id?: string
         }
         Relationships: []
@@ -70,6 +79,7 @@ export type Database = {
           amount: number
           baby_id: string
           created_at: string | null
+          date: string
           id: string
           time: string
           user_id: string
@@ -78,6 +88,7 @@ export type Database = {
           amount: number
           baby_id: string
           created_at?: string | null
+          date?: string
           id?: string
           time: string
           user_id: string
@@ -86,6 +97,7 @@ export type Database = {
           amount?: number
           baby_id?: string
           created_at?: string | null
+          date?: string
           id?: string
           time?: string
           user_id?: string
@@ -104,6 +116,7 @@ export type Database = {
         Row: {
           baby_id: string
           created_at: string | null
+          date: string
           endtime: string | null
           id: string
           starttime: string
@@ -112,6 +125,7 @@ export type Database = {
         Insert: {
           baby_id: string
           created_at?: string | null
+          date?: string
           endtime?: string | null
           id?: string
           starttime: string
@@ -120,6 +134,7 @@ export type Database = {
         Update: {
           baby_id?: string
           created_at?: string | null
+          date?: string
           endtime?: string | null
           id?: string
           starttime?: string
