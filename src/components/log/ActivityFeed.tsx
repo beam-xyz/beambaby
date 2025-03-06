@@ -195,6 +195,7 @@ const ActivityFeed: React.FC<ActivityFeedProps> = ({ selectedDate }) => {
                       )}
                     </div>
                     
+                    {/* Only show delete button for nap or feed, not for ratings */}
                     {(activity.type === 'nap' || activity.type === 'feed') && (
                       <button 
                         onClick={() => handleDeleteClick(activity.id, activity.type)}
