@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useBaby } from '@/context/BabyContext';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Play, Utensils, Plus, Minus, CalendarPlus } from 'lucide-react';
+import { Play, Utensils, Plus, Minus, CalendarPlus, Moon, GlassWater } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
 import { 
@@ -14,17 +14,56 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import AddFeedForm from './AddFeedForm';
+import { isSameDay } from 'date-fns';
 
 interface QuickLogSectionProps {
   selectedDate: Date;
 }
 
 const QuickLogSection: React.FC<QuickLogSectionProps> = ({ selectedDate }) => {
-  const { currentBaby, activeNap, startNap, endNap, addFeed } = useBaby();
+  const { currentBaby, activeNap, startNap, endNap, addFeed, naps, feeds } = useBaby();
   const [feedAmount, setFeedAmount] = useState<number>(4);
   const [addFeedDialogOpen, setAddFeedDialogOpen] = useState(false);
   
   const isToday = new Date(selectedDate).setHours(0, 0, 0, 0) === new Date().setHours(0, 0, 0, 0);
+  
+  // Calculate daily totals for the selected date
+  const dailyFeedTotal = React.useMemo(() => {
+    if (!currentBaby) return 0;
+    
+    return feeds
+      .filter(feed => 
+        feed.babyId === currentBaby.id && 
+        isSameDay(new Date(feed.date), selectedDate)
+      )
+      .reduce((total, feed) => total + feed.amount, 0);
+  }, [currentBaby, feeds, selectedDate]);
+  
+  const dailyNapTotal = React.useMemo(() => {
+    if (!currentBaby) return 0;
+    
+    return naps
+      .filter(nap => {
+        return nap.babyId === currentBaby.id && 
+               isSameDay(new Date(nap.date), selectedDate) && 
+               nap.endTime !== undefined;
+      })
+      .reduce((total, nap) => {
+        if (!nap.endTime) return total;
+        const napDuration = (nap.endTime.getTime() - nap.startTime.getTime()) / (1000 * 60); // in minutes
+        return total + napDuration;
+      }, 0);
+  }, [currentBaby, naps, selectedDate]);
+  
+  const formatNapTime = (minutes: number) => {
+    const hours = Math.floor(minutes / 60);
+    const mins = Math.floor(minutes % 60);
+    
+    if (hours > 0) {
+      return `${hours}h ${mins}m`;
+    }
+    return `${mins}m`;
+  };
   
   const handleStartNap = () => {
     if (!currentBaby) {
@@ -81,6 +120,22 @@ const QuickLogSection: React.FC<QuickLogSectionProps> = ({ selectedDate }) => {
     <Card className="border border-border shadow-sm">
       <CardContent className="p-3">
         <div className="flex flex-col gap-3">
+          {/* Daily Summary Display */}
+          {currentBaby && (
+            <div className="grid grid-cols-2 gap-2 bg-muted/50 rounded-md p-2 mb-1">
+              <div className="flex items-center justify-center gap-1.5 text-sm">
+                <GlassWater size={14} className="text-baby-mint" />
+                <span className="font-medium">{dailyFeedTotal} oz</span>
+              </div>
+              <div className="flex items-center justify-center gap-1.5 text-sm">
+                <Moon size={14} className="text-baby-lavender" />
+                <span className="font-medium">
+                  {dailyNapTotal > 0 ? formatNapTime(dailyNapTotal) : '0m'}
+                </span>
+              </div>
+            </div>
+          )}
+          
           <div className="grid grid-cols-2 gap-2">
             {isToday ? (
               <Button
