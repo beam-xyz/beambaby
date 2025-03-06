@@ -1,7 +1,7 @@
 
 import React, { useMemo } from 'react';
 import { useBaby } from '@/context/BabyContext';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { format, isSameDay } from 'date-fns';
 import { Utensils, Moon, Star } from 'lucide-react';
 
@@ -96,9 +96,12 @@ const ActivityFeed: React.FC<ActivityFeedProps> = ({ selectedDate }) => {
   
   return (
     <div className="space-y-2 pb-4">
-      <h3 className="text-sm font-medium text-muted-foreground px-1">Today's Activities</h3>
+      <h3 className="text-sm font-medium text-muted-foreground px-1 flex justify-between items-center">
+        <span>Today's Activities</span>
+        <span className="text-xs text-muted-foreground">({activities.length})</span>
+      </h3>
       
-      <div className="max-h-[calc(100vh-280px)] overflow-y-auto scroll-hidden space-y-2">
+      <div className="max-h-[calc(100vh-280px)] overflow-y-auto scroll-hidden space-y-2 pb-16 sm:pb-0">
         {activities.map((activity) => (
           <Card key={activity.id} className="border border-border shadow-sm overflow-hidden">
             <div className="flex">

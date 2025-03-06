@@ -64,7 +64,7 @@ const BabyCard: React.FC<BabyCardProps> = ({ baby, onEditClick }) => {
         "relative p-3 sm:p-5 rounded-xl transition-all duration-300 cursor-pointer overflow-hidden",
         isActive 
           ? "glass-morphism scale-[1.02] shadow-lg" 
-          : "bg-white border border-border hover:shadow-md",
+          : "bg-white border border-border hover:shadow-md dark:bg-gray-800",
         `hover:border-baby-${baby.color}`
       )}
       onClick={handleSelect}
@@ -148,6 +148,15 @@ const BabyCard: React.FC<BabyCardProps> = ({ baby, onEditClick }) => {
         <div className="absolute bottom-1 right-1 sm:bottom-2 sm:right-2">
           <span className="px-1.5 sm:px-2 py-0.5 sm:py-1 text-[10px] sm:text-xs rounded-full bg-primary text-white animate-pulse">
             Active
+          </span>
+        </div>
+      )}
+      
+      {/* Add tap indicator for mobile */}
+      {!isActive && (
+        <div className="absolute top-1 right-1 sm:hidden">
+          <span className="text-[10px] text-muted-foreground">
+            Tap to select
           </span>
         </div>
       )}

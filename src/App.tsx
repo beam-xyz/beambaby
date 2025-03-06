@@ -7,7 +7,7 @@ import Analytics from './pages/Analytics';
 import Settings from './pages/Settings';
 import Rating from './pages/Rating';
 import NotFound from './pages/NotFound';
-import { Toaster } from './components/ui/toaster';
+import { Toaster as SonnerToaster } from 'sonner';
 
 function App() {
   return (
@@ -22,7 +22,7 @@ function App() {
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Router>
-        <Toaster />
+        <SonnerToaster richColors position="top-right" />
       </BabyProvider>
     </ThemeProvider>
   );
