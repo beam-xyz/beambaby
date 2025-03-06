@@ -1,3 +1,4 @@
+
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/lib/supabase';
 import { Baby } from '../types';
@@ -10,17 +11,23 @@ export function useBabyMutations() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error('User not authenticated');
 
+      // Create a new object with the correct field names for the database
+      const dbBaby = {
+        name: baby.name,
+        birthdate: baby.birthDate, // Convert birthDate to birthdate for DB
+        color: baby.color,
+        user_id: user.id
+      };
+
       const { data, error } = await supabase
         .from('babies')
-        .insert([{
-          ...baby,
-          birthdate: baby.birthDate,
-          user_id: user.id
-        }])
+        .insert([dbBaby])
         .select()
         .single();
       
       if (error) throw error;
+      
+      // Convert back to frontend format
       return {
         ...data,
         birthDate: new Date(data.birthdate)
@@ -33,17 +40,25 @@ export function useBabyMutations() {
 
   const editBabyMutation = useMutation({
     mutationFn: async ({ id, ...updates }: { id: string } & Partial<Omit<Baby, 'id'>>) => {
+      // Create database update object with correct field names
+      const dbUpdates: any = { ...updates };
+      
+      // Handle birthDate specifically
+      if (updates.birthDate) {
+        dbUpdates.birthdate = updates.birthDate;
+        delete dbUpdates.birthDate; // Remove the frontend field
+      }
+
       const { data, error } = await supabase
         .from('babies')
-        .update({
-          ...updates,
-          birthdate: updates.birthDate
-        })
+        .update(dbUpdates)
         .eq('id', id)
         .select()
         .single();
       
       if (error) throw error;
+      
+      // Convert back to frontend format
       return {
         ...data,
         birthDate: new Date(data.birthdate)
